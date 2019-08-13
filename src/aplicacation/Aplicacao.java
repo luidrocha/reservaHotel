@@ -46,27 +46,18 @@ public class Aplicacao {
 			System.out.println("Saida: ");
 			dataSaida = sdf.parse(sc.next());
 
-			Date dataHoje = new Date();
+			{
 
-			// Verifica se as datas são antes da data de hoje.
+				String error = reserva.AtualizaData(dataEntrada, dataSaida);
+				if (error != null) {
+					System.out.println("Erro ao Atualizar Reserva: " + error);
+				} else {
+					// Caso o retorno seja nullo não houve erro, mostra a reserva atualizada
+					// Mostra a reserva atualizada
 
-			if (dataEntrada.before(dataHoje) || dataSaida.before(dataHoje)) {
+					System.out.println(reserva.toString());
 
-				System.out.println("As datas para atualização devem ser no futuro");
-
-			} else if (!dataSaida.after(dataEntrada)) {
-
-				System.out.println("Erro ao realizar A Reserva, data de SAIDA deve ser POSTERIOR a data de ENTRADA");
-			} else {
-
-				// Atualiza as datas de reserva
-
-				reserva.AtualizaData(dataEntrada, dataSaida);
-
-				// Mostra a reserva atualizada
-				
-				System.out.println(reserva.toString());
-
+				}
 				sc.next();
 				sc.close();
 			}
