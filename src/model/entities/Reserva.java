@@ -50,7 +50,8 @@ public class Reserva {
 	}
 
 	public String AtualizaData(Date dataEntrada, Date dataSaida) {
-
+// Melhora foi delegar a função a classe tirando do programa principal
+		
 		Date dataHoje = new Date();
 		// Verifica se as datas são antes da data de hoje.
 		if (dataEntrada.before(dataHoje) || dataSaida.before(dataHoje)) {
