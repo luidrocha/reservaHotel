@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import model.DomainException.DomainException;
+
 public class Reserva {
 
 	private Integer numeroQuarto;
@@ -11,12 +13,18 @@ public class Reserva {
 	private Date dataSaida;
 
 	private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	Date dataHoje = new Date();
 
 	public Reserva() {
 
 	}
 
 	public Reserva(Integer numeroQuarto, Date dataEntrada, Date dataSaida) {
+
+		if (dataEntrada.before(dataHoje) || !dataSaida.before(dataHoje)) {
+
+			throw new DomainException(", Datas para reserva devem esta no futuro");
+		}
 
 		this.numeroQuarto = numeroQuarto;
 		this.dataEntrada = dataEntrada;
@@ -49,27 +57,25 @@ public class Reserva {
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	}
 
-	public String AtualizaData(Date dataEntrada, Date dataSaida) {
-// Melhora foi delegar a função a classe tirando do programa principal
-		
-		Date dataHoje = new Date();
+	public void AtualizaData(Date dataEntrada, Date dataSaida) {
+
 		// Verifica se as datas são antes da data de hoje.
 		if (dataEntrada.before(dataHoje) || dataSaida.before(dataHoje)) {
-
-			return "As datas para atualização devem ser no futuro";
+			// Estanvia a exceção com a String
+			throw new DomainException("As datas para atualização devem ser no futuro");
 
 		}
 		// Verifica se a dataSaida não é depois da dataEntrada
 		if (!dataSaida.after(dataEntrada)) {
 
-			return "Erro ao realizar A Reserva, data de SAIDA deve ser POSTERIOR a data de ENTRADA";
+			// Estanvia a exceção com a String
+			throw new DomainException(", data de SAIDA deve ser POSTERIOR a data de ENTRADA");
 		}
 
 		// Atualiza as datas de reserva
 		this.dataEntrada = dataEntrada;
 		this.dataSaida = dataSaida;
-		// Retorna nulo informando que não deu nenhum erro
-		return null;
+
 	}
 
 	@Override
